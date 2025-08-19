@@ -20,7 +20,7 @@ from rest_framework import routers
 from configurador.views import (
     ClientesViewSet, MaterialesViewSet, OrdenProductosViewSet, OrdenesViewSet,
     ParrillaMaterialesViewSet, ParrillasViewSet, ProductoServiciosViewSet,
-    ProductosViewSet, ServiciosViewSet
+    ProductosViewSet, ServiciosViewSet, ProductoDetalleViewSet
 )
 
 router = routers.DefaultRouter()
@@ -33,6 +33,7 @@ router.register(r'parrillas', ParrillasViewSet)
 router.register(r'producto_servicios', ProductoServiciosViewSet)
 router.register(r'productos', ProductosViewSet)
 router.register(r'servicios', ServiciosViewSet)
+router.register(r'productos_completos', ProductoDetalleViewSet, basename='productos-completos')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

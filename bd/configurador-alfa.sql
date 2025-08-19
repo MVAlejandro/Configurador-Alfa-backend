@@ -3,7 +3,7 @@ DROP DATABASE IF EXISTS configurador_alfa;
 
 -- Crear base de datos
 CREATE DATABASE configurador_alfa;
-USE Configurador_Alfa;
+USE configurador_alfa;
 
 -- Tabla clientes
 CREATE TABLE clientes (
@@ -22,11 +22,11 @@ CREATE TABLE clientes (
 CREATE TABLE materiales (
     id_material INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(100) NOT NULL,
-    tipo_material VARCHAR(50),       -- Ej: pino, encino, plástico
+    tipo VARCHAR(50),
     largo DECIMAL(10,2),
     ancho DECIMAL(10,2),
     grosor DECIMAL(10,2),
-    material VARCHAR(50),
+    material VARCHAR(50),       -- Ej: pino, encino, plástico
     unidad VARCHAR(20),
     costo DECIMAL(10,2) NOT NULL
 );
@@ -50,6 +50,8 @@ CREATE TABLE parrillas (
     id_producto INT NOT NULL,
     tipo VARCHAR(20) NOT NULL,       -- 'TS', 'TI' o 'TC'
     tolerancias VARCHAR(100),
+    extra VARCHAR(100),
+    extra_2 VARCHAR(100),
     FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
 );
 
@@ -99,5 +101,5 @@ CREATE TABLE orden_productos (
     FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
 );
 
--- USE Configurador_Alfa;
+-- USE configurador_alfa;
 -- SHOW TABLES;

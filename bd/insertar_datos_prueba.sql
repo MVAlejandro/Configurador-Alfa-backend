@@ -9,7 +9,7 @@ VALUES
 ('Industrial Pallets S.A.', 'IPS987654CD2', 'María López', '50000', 'Calle Industria 45', '7223456789', 'contacto@pallets.com', 'Toluca, Edo. Méx.');
 
 -- 2, MATERIALES
-INSERT INTO materiales (nombre, tipo_material, largo, ancho, grosor, material, unidad, costo)
+INSERT INTO materiales (nombre, tipo, largo, ancho, grosor, material, unidad, costo)
 VALUES
 ('Tabla 40x3.5 in',    'Tabla',   40.00, 3.50, 1.00, 'Pino', 'pieza', 5.00),
 ('Tabla 40x4 in',      'Tabla',   40.00, 4.00, 1.00, 'Pino', 'pieza', 6.50),
@@ -33,7 +33,7 @@ VALUES
 ('Nueva',     'Barrote', 'Tradicional', 0.00, 48.00, 40.00, 5.00, 'img1.png'),
 ('Reciclada', 'Tacón',   'Invertido',   0.00, 40.00, 48.00, 5.50, 'img2.png');
 
--- 5) RELACIÓN PRODUCTO_SERVICIOS
+-- 5. RELACIÓN PRODUCTO_SERVICIOS
 -- Producto 1: Armado, Fumigación (sin pintura), Transporte
 -- Producto 2: Armado, HT, Pintura (Azul), Transporte
 INSERT INTO producto_servicios (id_producto, id_servicio, color)
@@ -48,14 +48,14 @@ VALUES
 (2, 6, NULL);      -- Transporte
 
 -- 6. PARRILLAS (TS, TI, TC por producto)
-INSERT INTO parrillas (id_producto, tipo, tolerancias)
+INSERT INTO parrillas (id_producto, tipo, tolerancias, extra, extra_2)
 VALUES
-(1, 'TS', '+-1/4"'),
-(1, 'TI', '+-1/4"'),
-(1, 'TC', '+-1/8"'),
-(2, 'TS', '+-1/4"'),
-(2, 'TI', '+-1/4"'),
-(2, 'TC', '+-1/8"');
+(1, 'TS', '+-1/4"', 'Separación: 2.86"', NULL),
+(1, 'TI', '+-1/4"', NULL, NULL),
+(1, 'TC', '+-1/8"', 'Tipo: Con saque', 'Inicio saque: 6"'),
+(2, 'TS', '+-1/4"', 'Separación: 3.92"', NULL),
+(2, 'TI', '+-1/4"', NULL, NULL),
+(2, 'TC', '+-1/8"', NULL, NULL);
 
 -- 7. PARRILLA_MATERIALES
 INSERT INTO parrilla_materiales (id_parrilla, id_material, cantidad)
@@ -81,7 +81,7 @@ VALUES
 (1, 0.00),
 (2, 0.00);
 
--- 9 ORDEN_PRODUCTOS
+-- 9. ORDEN_PRODUCTOS
 INSERT INTO orden_productos (id_orden, id_producto, cantidad)
 VALUES
 (1, 1, 10),

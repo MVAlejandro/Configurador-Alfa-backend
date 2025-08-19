@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Clientes(models.Model):
     id_cliente = models.AutoField(primary_key=True)
     razon_social = models.CharField(max_length=150)
@@ -20,7 +19,7 @@ class Clientes(models.Model):
 class Materiales(models.Model):
     id_material = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100)
-    tipo_material = models.CharField(max_length=50, blank=True, null=True)
+    tipo = models.CharField(max_length=50, blank=True, null=True)
     largo = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     ancho = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     grosor = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
@@ -31,61 +30,6 @@ class Materiales(models.Model):
     class Meta:
         managed = False
         db_table = 'materiales'
-
-
-class OrdenProductos(models.Model):
-    id_orden_producto = models.AutoField(primary_key=True)
-    id_orden = models.ForeignKey('Ordenes', models.DO_NOTHING, db_column='id_orden')
-    id_producto = models.ForeignKey('Productos', models.DO_NOTHING, db_column='id_producto')
-    cantidad = models.IntegerField()
-
-    class Meta:
-        managed = False
-        db_table = 'orden_productos'
-
-
-class Ordenes(models.Model):
-    id_orden = models.AutoField(primary_key=True)
-    id_cliente = models.ForeignKey(Clientes, models.DO_NOTHING, db_column='id_cliente')
-    fecha_creacion = models.DateTimeField(blank=True, null=True)
-    total_estimado = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'ordenes'
-
-
-class ParrillaMateriales(models.Model):
-    id_parrilla_material = models.AutoField(primary_key=True)
-    id_parrilla = models.ForeignKey('Parrillas', models.DO_NOTHING, db_column='id_parrilla')
-    id_material = models.ForeignKey(Materiales, models.DO_NOTHING, db_column='id_material')
-    cantidad = models.IntegerField()
-
-    class Meta:
-        managed = False
-        db_table = 'parrilla_materiales'
-
-
-class Parrillas(models.Model):
-    id_parrilla = models.AutoField(primary_key=True)
-    id_producto = models.ForeignKey('Productos', models.DO_NOTHING, db_column='id_producto')
-    tipo = models.CharField(max_length=20)
-    tolerancias = models.CharField(max_length=100, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'parrillas'
-
-
-class ProductoServicios(models.Model):
-    id_producto_servicio = models.AutoField(primary_key=True)
-    id_producto = models.ForeignKey('Productos', models.DO_NOTHING, db_column='id_producto')
-    id_servicio = models.ForeignKey('Servicios', models.DO_NOTHING, db_column='id_servicio')
-    color = models.CharField(max_length=50, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'producto_servicios'
 
 
 class Productos(models.Model):
@@ -104,6 +48,30 @@ class Productos(models.Model):
         db_table = 'productos'
 
 
+class Parrillas(models.Model):
+    id_parrilla = models.AutoField(primary_key=True)
+    id_producto = models.ForeignKey(Productos, models.DO_NOTHING, db_column='id_producto')
+    tipo = models.CharField(max_length=20)  # 'TS', 'TI', 'TC'
+    tolerancias = models.CharField(max_length=100, blank=True, null=True)
+    extra = models.CharField(max_length=100, blank=True, null=True)
+    extra_2 = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'parrillas'
+
+
+class ParrillaMateriales(models.Model):
+    id_parrilla_material = models.AutoField(primary_key=True)
+    id_parrilla = models.ForeignKey(Parrillas, models.DO_NOTHING, db_column='id_parrilla')
+    id_material = models.ForeignKey(Materiales, models.DO_NOTHING, db_column='id_material')
+    cantidad = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'parrilla_materiales'
+
+
 class Servicios(models.Model):
     id_servicio = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
@@ -112,3 +80,36 @@ class Servicios(models.Model):
     class Meta:
         managed = False
         db_table = 'servicios'
+
+
+class ProductoServicios(models.Model):
+    id_producto_servicio = models.AutoField(primary_key=True)
+    id_producto = models.ForeignKey(Productos, models.DO_NOTHING, db_column='id_producto')
+    id_servicio = models.ForeignKey(Servicios, models.DO_NOTHING, db_column='id_servicio')
+    color = models.CharField(max_length=50, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'producto_servicios'
+
+
+class Ordenes(models.Model):
+    id_orden = models.AutoField(primary_key=True)
+    id_cliente = models.ForeignKey(Clientes, models.DO_NOTHING, db_column='id_cliente')
+    fecha_creacion = models.DateTimeField(blank=True, null=True)
+    total_estimado = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'ordenes'
+
+
+class OrdenProductos(models.Model):
+    id_orden_producto = models.AutoField(primary_key=True)
+    id_orden = models.ForeignKey(Ordenes, models.DO_NOTHING, db_column='id_orden')
+    id_producto = models.ForeignKey(Productos, models.DO_NOTHING, db_column='id_producto')
+    cantidad = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'orden_productos'
