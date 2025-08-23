@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import (
-    Clientes, Materiales, OrdenProductos, Ordenes,
-    ParrillaMateriales, Parrillas, ProductoServicios,
+    Clientes, Costos, OrdenProductos, 
+    Ordenes, Componentes, ProductoServicios,
     Productos, Servicios
 )
 
@@ -10,9 +10,9 @@ class ClientesSerializer(serializers.ModelSerializer):
         model = Clientes
         fields = '__all__'
 
-class MaterialesSerializer(serializers.ModelSerializer):
+class CostosSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Materiales
+        model = Costos
         fields = '__all__'
 
 class OrdenProductosSerializer(serializers.ModelSerializer):
@@ -25,14 +25,9 @@ class OrdenesSerializer(serializers.ModelSerializer):
         model = Ordenes
         fields = '__all__'
 
-class ParrillaMaterialesSerializer(serializers.ModelSerializer):
+class ComponentesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ParrillaMateriales
-        fields = '__all__'
-
-class ParrillasSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Parrillas
+        model = Componentes
         fields = '__all__'
 
 class ProductoServiciosSerializer(serializers.ModelSerializer):
@@ -53,24 +48,20 @@ class ServiciosSerializer(serializers.ModelSerializer):
 
 # --- Serializadores compuestos ---
 
-class MaterialDetalleSerializer(serializers.ModelSerializer):
+class CostoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Materiales
-        fields = ['id_material', 'nombre', 'tipo', 'largo', 'ancho', 'grosor', 'unidad', 'costo']
+        model = Costos
+        fields = ['id_costo', 'tipo_madera', 'costo']
 
-class ParrillaMaterialDetalleSerializer(serializers.ModelSerializer):
-    material = MaterialDetalleSerializer(source='id_material')
-
-    class Meta:
-        model = ParrillaMateriales
-        fields = ['id_parrilla_material', 'cantidad', 'material']
-
-class ParrillaDetalleSerializer(serializers.ModelSerializer):
-    materiales = ParrillaMaterialDetalleSerializer(source='parrillamateriales_set', many=True)
+class ComponenteDetalleSerializer(serializers.ModelSerializer):
+    costo = CostoSerializer(source='id_costo')
 
     class Meta:
-        model = Parrillas
-        fields = ['id_parrilla', 'tipo', 'tolerancias', 'extra', 'extra_2', 'materiales']
+        model = Componentes
+        fields = [
+            'id_componente', 'tipo', 'cantidad', 'largo', 'ancho', 'grosor',
+            'tolerancia', 'separacion_TS', 'tipo_B', 'distancia_B', 'costo'
+        ]
 
 class ProductoServicioDetalleSerializer(serializers.ModelSerializer):
     servicio = serializers.CharField(source='id_servicio.nombre') 
@@ -80,7 +71,7 @@ class ProductoServicioDetalleSerializer(serializers.ModelSerializer):
         fields = ['id_producto_servicio', 'color', 'servicio']
 
 class ProductoDetalleSerializer(serializers.ModelSerializer):
-    parrillas = ParrillaDetalleSerializer(source='parrillas_set', many=True)
+    componentes = ComponenteDetalleSerializer(source='componentes_set', many=True)
     servicios = ProductoServicioDetalleSerializer(source='productoservicios_set', many=True)
 
     class Meta:
@@ -94,7 +85,6 @@ class ProductoDetalleSerializer(serializers.ModelSerializer):
             'largo_gral',
             'ancho_gral',
             'grosor_gral',
-            'img_plano',
-            'parrillas',
+            'componentes',
             'servicios'
         ]

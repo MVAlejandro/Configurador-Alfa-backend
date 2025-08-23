@@ -18,18 +18,17 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from configurador.views import (
-    ClientesViewSet, MaterialesViewSet, OrdenProductosViewSet, OrdenesViewSet,
-    ParrillaMaterialesViewSet, ParrillasViewSet, ProductoServiciosViewSet,
+    ClientesViewSet, CostosViewSet, OrdenProductosViewSet,
+    OrdenesViewSet, ComponentesViewSet, ProductoServiciosViewSet,
     ProductosViewSet, ServiciosViewSet, ProductoDetalleViewSet
 )
 
 router = routers.DefaultRouter()
 router.register(r'clientes', ClientesViewSet)
-router.register(r'materiales', MaterialesViewSet)
+router.register(r'costos', CostosViewSet)
 router.register(r'orden_productos', OrdenProductosViewSet)
 router.register(r'ordenes', OrdenesViewSet)
-router.register(r'parrilla_materiales', ParrillaMaterialesViewSet)
-router.register(r'parrillas', ParrillasViewSet)
+router.register(r'componentes', ComponentesViewSet)
 router.register(r'producto_servicios', ProductoServiciosViewSet)
 router.register(r'productos', ProductosViewSet)
 router.register(r'servicios', ServiciosViewSet)

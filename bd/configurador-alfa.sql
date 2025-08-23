@@ -18,17 +18,11 @@ CREATE TABLE clientes (
     destino TEXT
 );
 
--- Tabla materiales
-CREATE TABLE materiales (
-    id_material INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(100) NOT NULL,
-    tipo VARCHAR(50),
-    largo DECIMAL(10,2),
-    ancho DECIMAL(10,2),
-    grosor DECIMAL(10,2),
-    material VARCHAR(50),       -- Ej: pino, encino, plástico
-    unidad VARCHAR(20),
-    costo DECIMAL(10,2) NOT NULL
+-- Tabla costos
+CREATE TABLE costos (
+    id_costo INT PRIMARY KEY AUTO_INCREMENT,
+    tipo_madera VARCHAR(50) NOT NULL,
+    costo DECIMAL(10,2) NOT NULL  -- costo por unidad de volumen 
 );
 
 -- Tabla productos
@@ -40,29 +34,25 @@ CREATE TABLE productos (
     precio_unit DECIMAL(10,2),       -- calculado
     largo_gral DECIMAL(10,2),
     ancho_gral DECIMAL(10,2),
-    grosor_gral DECIMAL(10,2),
-    img_plano TEXT
+    grosor_gral DECIMAL(10,2)
 );
 
--- Tabla parrillas
-CREATE TABLE parrillas (
-    id_parrilla INT PRIMARY KEY AUTO_INCREMENT,
+-- Tabla componentes
+CREATE TABLE componentes (
+    id_componente INT PRIMARY KEY AUTO_INCREMENT,
     id_producto INT NOT NULL,
-    tipo VARCHAR(20) NOT NULL,       -- 'TS', 'TI' o 'TC'
-    tolerancias VARCHAR(100),
-    extra VARCHAR(100),
-    extra_2 VARCHAR(100),
-    FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
-);
-
--- Tabla parrilla_materiales
-CREATE TABLE parrilla_materiales (
-    id_parrilla_material INT PRIMARY KEY AUTO_INCREMENT,
-    id_parrilla INT NOT NULL,
-    id_material INT NOT NULL,
+    tipo VARCHAR(20),              -- 'TS', 'TI', 'B', 'TA', 'TC'
     cantidad INT NOT NULL,
-    FOREIGN KEY (id_parrilla) REFERENCES parrillas(id_parrilla),
-    FOREIGN KEY (id_material) REFERENCES materiales(id_material)
+    largo DECIMAL(10,2),
+    ancho DECIMAL(10,2),
+    grosor DECIMAL(10,2),
+    tolerancia VARCHAR(100),
+    separacion_TS DECIMAL(10,2),   -- opcional
+    tipo_B VARCHAR(50),            -- opcional
+    distancia_B DECIMAL(10,2),     -- opcional
+    id_costo INT NOT NULL,
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto),
+    FOREIGN KEY (id_costo) REFERENCES costos(id_costo)
 );
 
 -- Tabla servicios

@@ -8,14 +8,13 @@ VALUES
 ('Maderas del Norte S.A. de C.V.', 'MNO123456AB1', 'Juan Pérez', '64000', 'Av. Reforma 123', '8112345678', 'ventas@maderasnorte.com', 'Monterrey, NL'),
 ('Industrial Pallets S.A.', 'IPS987654CD2', 'María López', '50000', 'Calle Industria 45', '7223456789', 'contacto@pallets.com', 'Toluca, Edo. Méx.');
 
--- 2, MATERIALES
-INSERT INTO materiales (nombre, tipo, largo, ancho, grosor, material, unidad, costo)
+-- 2, COSTOS
+INSERT INTO costos (tipo_madera, costo)
 VALUES
-('Tabla 40x3.5 in',    'Tabla',   40.00, 3.50, 1.00, 'Pino', 'pieza', 5.00),
-('Tabla 40x4 in',      'Tabla',   40.00, 4.00, 1.00, 'Pino', 'pieza', 6.50),
-('Barrote 48x3.5 in',  'Barrote', 48.00, 3.50, 1.50, 'Pino', 'pieza', 8.00),
-('Tacón 3.5x3.5 in',   'Tacón',    3.50, 3.50, 3.50, 'Pino', 'pieza', 4.75),
-('Tabla 48x3.5 in',    'Tabla',   48.00, 3.50, 1.00, 'Pino', 'pieza', 7.50);
+('Pino', 16.50),
+('Oyamel', 14.50),
+('Híbrido', 10.00),
+('Reciclado', 7.50);
 
 -- 3. SERVICIOS
 INSERT INTO servicios (nombre, costo)
@@ -28,10 +27,10 @@ VALUES
 ('Transporte', 20.00);
 
 -- 4. PRODUCTOS
-INSERT INTO productos (tipo, subtipo, acomodo, precio_unit, largo_gral, ancho_gral, grosor_gral, img_plano)
+INSERT INTO productos (tipo, subtipo, acomodo, precio_unit, largo_gral, ancho_gral, grosor_gral)
 VALUES
-('Nueva',     'Barrote', 'Tradicional', 0.00, 48.00, 40.00, 5.00, 'img1.png'),
-('Reciclada', 'Tacón',   'Invertido',   0.00, 40.00, 48.00, 5.50, 'img2.png');
+('Nueva',   'Barrote',   'Tradicional', 0.00, 48.00, 40.00, 5.00),
+('Reciclada', 'Tacón',   'Tradicional', 0.00, 48.00, 40.00, 5.00);
 
 -- 5. RELACIÓN PRODUCTO_SERVICIOS
 -- Producto 1: Armado, Fumigación (sin pintura), Transporte
@@ -47,33 +46,18 @@ VALUES
 (2, 4, 'Azul'),    -- Pintura con color
 (2, 6, NULL);      -- Transporte
 
--- 6. PARRILLAS (TS, TI, TC por producto)
-INSERT INTO parrillas (id_producto, tipo, tolerancias, extra, extra_2)
+-- 6. COMPONENTES (TS, TI, B, TAL, TAC, TC por producto)
+INSERT INTO componentes (id_producto, tipo, cantidad, largo, ancho, grosor, tolerancia, separacion_TS, tipo_B, distancia_B, id_costo)
 VALUES
-(1, 'TS', '+-1/4"', 'Separación: 2.86"', NULL),
-(1, 'TI', '+-1/4"', NULL, NULL),
-(1, 'TC', '+-1/8"', 'Tipo: Con saque', 'Inicio saque: 6"'),
-(2, 'TS', '+-1/4"', 'Separación: 3.92"', NULL),
-(2, 'TI', '+-1/4"', NULL, NULL),
-(2, 'TC', '+-1/8"', NULL, NULL);
-
--- 7. PARRILLA_MATERIALES
-INSERT INTO parrilla_materiales (id_parrilla, id_material, cantidad)
-VALUES
--- Producto 1 - TS
-(1, 1, 8),
--- Producto 1 - TI
-(2, 1, 3),
--- Producto 1 - TC
-(3, 3, 3),
--- Producto 2 - TS
-(4, 1, 7),
--- Producto 2 - TI
-(5, 1, 2),
-(5, 2, 3),
--- Producto 2 - TC
-(6, 4, 9),
-(6, 5, 3);
+(1,  'TS', 8, 40.00, 3.50, 0.62, '+-1/4"', 2.86,        NULL, NULL, 1),
+(1,  'TI', 3, 40.00, 3.50, 0.62, '+-1/4"', NULL,        NULL, NULL, 1),
+(1,   'B', 3, 48.00, 3.50, 0.62, '+-1/8"', NULL, 'Con saque', 6.00, 1),
+(2,  'TS', 7, 40.00, 3.50, 0.62, '+-1/4"', 3.92,        NULL, NULL, 4),
+(2,  'TI', 2, 40.00, 3.50, 0.62, '+-1/4"', NULL,        NULL, NULL, 4),
+(2,  'TI', 3, 41.00, 3.50, 0.62, '+-1/4"', NULL,        NULL, NULL, 4),
+(2, 'TAL', 6,  3.50, 3.50, 3.00, '+-1/8"', NULL,        NULL, NULL, 4),
+(2, 'TAC', 3,  3.50, 3.50, 3.00, '+-1/8"', NULL,        NULL, NULL, 4),
+(2,  'TC', 3, 48.00, 3.50, 0.62, '+-1/8"', NULL,        NULL, NULL, 4);
 
 -- 8. ÓRDENES
 INSERT INTO ordenes (id_cliente, total_estimado)

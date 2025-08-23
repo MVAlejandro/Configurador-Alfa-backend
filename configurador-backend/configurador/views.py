@@ -3,13 +3,13 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import (
-    Clientes, Materiales, OrdenProductos, Ordenes,
-    ParrillaMateriales, Parrillas, ProductoServicios,
+    Clientes, Costos, OrdenProductos, 
+    Ordenes, Componentes, ProductoServicios,
     Productos, Servicios
 )
 from .serializers import (
-    ClientesSerializer, MaterialesSerializer, OrdenProductosSerializer, OrdenesSerializer,
-    ParrillaMaterialesSerializer, ParrillasSerializer, ProductoServiciosSerializer,
+    ClientesSerializer, CostosSerializer, OrdenProductosSerializer, 
+    OrdenesSerializer, ComponentesSerializer, ProductoServiciosSerializer,
     ProductosSerializer, ServiciosSerializer, ProductoDetalleSerializer
 )
 
@@ -28,9 +28,9 @@ class ClientesViewSet(viewsets.ModelViewSet):
         )
         return Response({'id_cliente': cliente.id_cliente, 'created': created})
 
-class MaterialesViewSet(viewsets.ModelViewSet):
-    queryset = Materiales.objects.all()
-    serializer_class = MaterialesSerializer
+class CostosViewSet(viewsets.ModelViewSet):
+    queryset = Costos.objects.all()
+    serializer_class = CostosSerializer
 
 class OrdenProductosViewSet(viewsets.ModelViewSet):
     queryset = OrdenProductos.objects.all()
@@ -40,13 +40,9 @@ class OrdenesViewSet(viewsets.ModelViewSet):
     queryset = Ordenes.objects.all()
     serializer_class = OrdenesSerializer
 
-class ParrillaMaterialesViewSet(viewsets.ModelViewSet):
-    queryset = ParrillaMateriales.objects.all()
-    serializer_class = ParrillaMaterialesSerializer
-
-class ParrillasViewSet(viewsets.ModelViewSet):
-    queryset = Parrillas.objects.all()
-    serializer_class = ParrillasSerializer
+class ComponentesViewSet(viewsets.ModelViewSet):
+    queryset = Componentes.objects.all()
+    serializer_class = ComponentesSerializer
 
 class ProductoServiciosViewSet(viewsets.ModelViewSet):
     queryset = ProductoServicios.objects.all()

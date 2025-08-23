@@ -16,20 +16,14 @@ class Clientes(models.Model):
         db_table = 'clientes'
 
 
-class Materiales(models.Model):
-    id_material = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=100)
-    tipo = models.CharField(max_length=50, blank=True, null=True)
-    largo = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    ancho = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    grosor = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    material = models.CharField(max_length=50, blank=True, null=True)
-    unidad = models.CharField(max_length=20, blank=True, null=True)
+class Costos(models.Model):
+    id_costo = models.AutoField(primary_key=True)
+    tipo_madera = models.CharField(max_length=50, blank=True, null=True)
     costo = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
         managed = False
-        db_table = 'materiales'
+        db_table = 'costos'
 
 
 class Productos(models.Model):
@@ -41,36 +35,29 @@ class Productos(models.Model):
     largo_gral = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     ancho_gral = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     grosor_gral = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    img_plano = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'productos'
 
 
-class Parrillas(models.Model):
-    id_parrilla = models.AutoField(primary_key=True)
+class Componentes(models.Model):
+    id_componente = models.AutoField(primary_key=True)
     id_producto = models.ForeignKey(Productos, models.DO_NOTHING, db_column='id_producto')
-    tipo = models.CharField(max_length=20)  # 'TS', 'TI', 'TC'
-    tolerancias = models.CharField(max_length=100, blank=True, null=True)
-    extra = models.CharField(max_length=100, blank=True, null=True)
-    extra_2 = models.CharField(max_length=100, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'parrillas'
-
-
-class ParrillaMateriales(models.Model):
-    id_parrilla_material = models.AutoField(primary_key=True)
-    id_parrilla = models.ForeignKey(Parrillas, models.DO_NOTHING, db_column='id_parrilla')
-    id_material = models.ForeignKey(Materiales, models.DO_NOTHING, db_column='id_material')
+    tipo = models.CharField(max_length=20)  # 'TS', 'TI', 'B', 'TA', 'TC'
     cantidad = models.IntegerField()
+    largo = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    ancho = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    grosor = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    tolerancia = models.CharField(max_length=100, blank=True, null=True)
+    separacion_TS = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    tipo_B = models.CharField(max_length=50, blank=True, null=True)
+    distancia_B = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    id_costo = models.ForeignKey(Costos, models.DO_NOTHING, db_column='id_costo')
 
     class Meta:
         managed = False
-        db_table = 'parrilla_materiales'
-
+        db_table = 'componentes'
 
 class Servicios(models.Model):
     id_servicio = models.AutoField(primary_key=True)
