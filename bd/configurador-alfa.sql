@@ -72,12 +72,12 @@ CREATE TABLE producto_servicios (
     FOREIGN KEY (id_servicio) REFERENCES servicios(id_servicio)
 );
 
--- Tabla ordenes
+-- Tabla ordenes (CORREGIDA)
 CREATE TABLE ordenes (
     id_orden INT PRIMARY KEY AUTO_INCREMENT,
     id_cliente INT NOT NULL,
-    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-    total_estimado DECIMAL(10,2),
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    total_estimado DECIMAL(10,2) DEFAULT 0.00 NOT NULL,
     FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente)
 );
 
@@ -91,5 +91,6 @@ CREATE TABLE orden_productos (
     FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
 );
 
+SET GLOBAL time_zone = '-06:00';
 -- USE configurador_alfa;
 -- SHOW TABLES;

@@ -33,8 +33,17 @@ class CostosViewSet(viewsets.ModelViewSet):
     serializer_class = CostosSerializer
 
 class OrdenProductosViewSet(viewsets.ModelViewSet):
-    queryset = OrdenProductos.objects.all()
+    queryset = OrdenProductos.objects.all() 
     serializer_class = OrdenProductosSerializer
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        orden_id = self.request.query_params.get('orden')
+        
+        if orden_id:
+            queryset = queryset.filter(id_orden=orden_id)
+        
+        return queryset
 
 class OrdenesViewSet(viewsets.ModelViewSet):
     queryset = Ordenes.objects.all()
@@ -43,10 +52,39 @@ class OrdenesViewSet(viewsets.ModelViewSet):
 class ComponentesViewSet(viewsets.ModelViewSet):
     queryset = Componentes.objects.all()
     serializer_class = ComponentesSerializer
+    
+    def get_queryset(self):
+        queryset = Componentes.objects.all()
+        producto_id = self.request.query_params.get('producto', None)
+        
+        if producto_id:
+            try:
+                queryset = queryset.filter(id_producto=int(producto_id))
+            except (ValueError, TypeError):
+                pass
+                
+        return queryset
 
 class ProductoServiciosViewSet(viewsets.ModelViewSet):
     queryset = ProductoServicios.objects.all()
     serializer_class = ProductoServiciosSerializer
+    
+    def get_queryset(self):
+        """
+        Sobrescribir para filtrar por producto si viene en la query string
+        """
+        queryset = ProductoServicios.objects.all()
+        producto_id = self.request.query_params.get('producto', None)
+        
+        if producto_id:
+            try:
+                # Filtrar servicios por id_producto
+                queryset = queryset.filter(id_producto=int(producto_id))
+            except (ValueError, TypeError):
+                # Si el parámetro no es un número válido, devolver todos
+                pass
+                
+        return queryset
 
 class ProductosViewSet(viewsets.ModelViewSet):
     queryset = Productos.objects.all()

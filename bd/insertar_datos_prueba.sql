@@ -13,18 +13,18 @@ INSERT INTO costos (tipo_madera, costo)
 VALUES
 ('Pino', 16.50),
 ('Oyamel', 14.50),
-('Híbrido', 10.00),
-('Reciclado', 7.50);
+('Híbrido', 12.00),
+('Reciclado', 8.00);
 
 -- 3. SERVICIOS
 INSERT INTO servicios (nombre, costo)
 VALUES
-('Reparado',   12.00),
-('Armado',     15.00),
-('HT',         18.00),
-('Pintura',    10.00),
-('Fumigacion',  9.00),
-('Transporte', 20.00);
+('Reparado',   6.72),
+('Armado',     7.84),
+('HT',         10.00),
+('Pintura',    8.00),
+('Fumigacion',  0.00),
+('Transporte', 15.00);
 
 -- 4. PRODUCTOS
 INSERT INTO productos (tipo, subtipo, acomodo, precio_unit, largo_gral, ancho_gral, grosor_gral)
